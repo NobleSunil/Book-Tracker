@@ -1,0 +1,161 @@
+/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Reset & base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f0f4f8;
+  color: #1a202c;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+/* ── Page wrapper ── */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ── Page heading ── */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* ── Form card ── */
+#book-form {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Field wrapper ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #2d3748;
+  background: #f7fafc;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #667eea;
+  background: #fff;
+}
+
+/* ── Inline validation message ── */
+.field-error {
+  font-size: 0.8rem;
+  color: #e53e3e;
+  min-height: 1rem; /* reserves space so layout doesn't jump */
+}
+
+/* ── Add button ── */
+#add-btn {
+  align-self: flex-start;
+  padding: 0.6rem 1.4rem;
+  background: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+#add-btn:hover {
+  background: #5a67d8;
+}
+
+#add-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Book list ── */
+#book-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Single book card ── */
+.book-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.book-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2d3748;
+  /* Long words wrap instead of overflowing */
+  overflow-wrap: anywhere;
+  margin-bottom: 0.2rem;
+}
+
+.book-author {
+  font-size: 0.9rem;
+  color: #718096;
+  overflow-wrap: anywhere;
+  margin-bottom: 0.6rem;
+}
+
+/* ── Status badge ── */
+.book-status {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+
+.status-to-read  { background: #ebf4ff; color: #2b6cb0; }
+.status-reading  { background: #fefcbf; color: #744210; }
+.status-finished { background: #f0fff4; color: #276749; }
+
+/* ── Empty state ── */
+.empty-message {
+  text-align: center;
+  color: #a0aec0;
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
