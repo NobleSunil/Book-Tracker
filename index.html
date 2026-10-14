@@ -17,14 +17,14 @@
 
         <div class="field">
           <label for="title-input">Title</label>
-          <input type="text" id="title-input" placeholder="Book title" />
+          <input type="text" id="title-input" placeholder="Book title" autocomplete="off" />
           <!-- Inline validation message for title -->
           <span class="field-error" id="title-error"></span>
         </div>
 
         <div class="field">
           <label for="author-input">Author</label>
-          <input type="text" id="author-input" placeholder="Author name" />
+          <input type="text" id="author-input" placeholder="Author name" autocomplete="off" />
           <!-- Inline validation message for author -->
           <span class="field-error" id="author-error"></span>
         </div>
@@ -55,6 +55,9 @@
           autocomplete="off"
         />
       </div>
+
+      <!-- Counts summary — filled by render(), counts ALL books not just visible ones -->
+      <p id="book-counts" class="book-counts"></p>
 
       <!-- Book list rendered by render() -->
       <ul id="book-list"></ul>
