@@ -14,6 +14,7 @@ body {
   color: #1a202c;
   min-height: 100vh;
   padding: 2rem 1rem;
+  overflow-x: hidden; /* prevent sideways scrolling on any screen size */
 }
 
 /* ── Page wrapper ── */
@@ -180,6 +181,35 @@ select:focus {
   border-color: #667eea;
 }
 
+/* ── Delete button ── */
+.delete-btn {
+  display: block;
+  margin-top: 0.65rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: #c53030;
+  background: #fff5f5;
+  border: 1.5px solid #feb2b2;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.delete-btn:hover {
+  background: #fed7d7;
+  border-color: #fc8181;
+}
+
+/* ── Counts summary ── */
+.book-counts {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #718096;
+  margin-bottom: 0.75rem;
+}
+
 /* ── Search box ── */
 .search-wrapper {
   display: flex;
@@ -235,4 +265,47 @@ select:focus {
 /* Show the element only when it has text */
 .save-error:not(:empty) {
   display: block;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Mobile layout — single column, 44 px touch targets
+   Applies at or below 600 px (covers 375 px phones)
+─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+
+  body {
+    padding: 1rem 0.75rem; /* tighter side padding on small screens */
+  }
+
+  /* ── 44 px minimum touch-target height on all interactive elements ── */
+  input[type="text"],
+  input[type="search"],
+  select,
+  #add-btn {
+    min-height: 44px;
+  }
+
+  /* Add button fills the full width on mobile */
+  #add-btn {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  /* Card status dropdown: full width + 44 px height */
+  .card-status-select {
+    min-height: 44px;
+    width: 100%;
+  }
+
+  /* Stack the badge above the dropdown on narrow screens */
+  .card-status-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Delete button: full width + 44 px height */
+  .delete-btn {
+    min-height: 44px;
+    width: 100%;
+  }
 }
