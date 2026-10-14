@@ -42,6 +42,20 @@
 
       </form>
 
+      <!-- Shown only when localStorage.setItem fails -->
+      <p id="save-error" class="save-error"></p>
+
+      <!-- Search box — filters the displayed list without touching the data -->
+      <div class="search-wrapper">
+        <label for="search-input" class="search-label">Search</label>
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search by title or author…"
+          autocomplete="off"
+        />
+      </div>
+
       <!-- Book list rendered by render() -->
       <ul id="book-list"></ul>
 
