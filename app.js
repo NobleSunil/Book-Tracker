@@ -51,7 +51,7 @@ function loadBooks() {
       if (typeof item.title     !== 'string'  || item.title.trim()  === '') return false;
       if (typeof item.author    !== 'string'  || item.author.trim() === '') return false;
       if (!VALID_STATUSES.includes(item.status))                            return false;
-      if (typeof item.createdAt !== 'number')                               return false;
+      if (!Number.isFinite(item.createdAt))                                    return false;
 
       // Drop if we've already seen this id
       if (seenIds.has(item.id)) return false;
@@ -78,8 +78,27 @@ function setSaveError(message) {
 // Sorts a copy newest-first, then filters by the search term.
 // Never mutates the main array or localStorage.
 function render() {
-  const list = document.getElementById('book-list');
-  list.innerHTML = ''; // clear previous cards
+  const list       = document.getElementById('book-list');
+  const countsEl   = document.getElementById('book-counts');
+  list.innerHTML   = ''; // clear previous cards
+
+  // ── Counts (always from the full books array, not the filtered view) ──
+  if (books.length === 0) {
+    countsEl.textContent = ''; // nothing to show when the list is empty
+  } else {
+    // Tally each status
+    const finished = books.filter(function (b) { return b.status === 'finished'; }).length;
+    const reading  = books.filter(function (b) { return b.status === 'reading';  }).length;
+    const toRead   = books.filter(function (b) { return b.status === 'to-read';  }).length;
+
+    // Build parts only for non-zero counts, in the order: finished, reading, to read
+    const parts = [];
+    if (finished) parts.push(finished + ' finished');
+    if (reading)  parts.push(reading  + ' reading');
+    if (toRead)   parts.push(toRead   + ' to read');
+
+    countsEl.textContent = parts.join(', '); // e.g. "3 finished, 2 reading, 1 to read"
+  }
 
   // Sort a shallow copy newest-first; leave books[] untouched
   const sorted = books.slice().sort((a, b) => b.createdAt - a.createdAt);
@@ -156,6 +175,9 @@ function render() {
       const newStatus = selectEl.value;
       const bookId    = selectEl.dataset.id;
 
+      // Reject any value not in the allowed set
+      if (!VALID_STATUSES.includes(newStatus)) return;
+
       // Find the book in the main array by id
       const target = books.find(function (b) { return b.id === bookId; });
       if (!target) return; // id not found — do nothing, don't crash
@@ -165,12 +187,34 @@ function render() {
       render();                  // re-draw (search text is preserved)
     });
 
+    // Delete button — stores the book id for the click handler
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.dataset.id = book.id;
+
+    deleteBtn.addEventListener('click', function () {
+      // Ask for confirmation before removing
+      if (!confirm('Delete this book?')) return;
+
+      const bookId = deleteBtn.dataset.id;
+
+      // Remove from the main array by id — never by array position
+      const index = books.findIndex(function (b) { return b.id === bookId; });
+      if (index === -1) return; // id not found — do nothing
+
+      books.splice(index, 1); // remove the one matching book
+      saveBooks();             // persist the change
+      render();                // re-draw (search text is preserved)
+    });
+
     rowEl.appendChild(badgeEl);
     rowEl.appendChild(selectEl);
 
     li.appendChild(titleEl);
     li.appendChild(authorEl);
     li.appendChild(rowEl);
+    li.appendChild(deleteBtn);
     list.appendChild(li);
   });
 }
@@ -206,12 +250,16 @@ document.getElementById('book-form').addEventListener('submit', function (event)
   }
   if (!valid) return;
 
+  // Read status once; fall back to 'to-read' if the value is somehow invalid
+  const rawStatus = document.getElementById('status-select').value;
+  const status    = VALID_STATUSES.includes(rawStatus) ? rawStatus : 'to-read';
+
   // Build the new book object
   const newBook = {
     id:        generateId(),
     title:     title,
     author:    author,
-    status:    document.getElementById('status-select').value,
+    status:    status,
     createdAt: Date.now(),
   };
 
